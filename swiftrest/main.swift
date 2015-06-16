@@ -6,7 +6,12 @@
 //  Copyright © 2015 Steffen Neubauer. All rights reserved.
 //
 
-import Foundation
+// hah! we don't need this.
+//import Foundation
 
-print("Hello, World!")
 
+let con = HttpConnection(type: .Request)
+let con2 = HttpConnection(type: .Request)
+
+try con2.receive(return_test_data(), len: return_test_length())
+try con.receive(return_test_data(), len: return_test_length())

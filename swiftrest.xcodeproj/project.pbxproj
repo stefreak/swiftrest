@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		F9D598EA1B2F9B9E00862EAB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D598E91B2F9B9E00862EAB /* main.swift */; };
+		F9DE679E1B2F9FF800018488 /* http_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67941B2F9FF800018488 /* http_parser.c */; };
+		F9DE67A51B30835200018488 /* testdata.c in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67A31B30835200018488 /* testdata.c */; };
+		F9DE67A71B30A76F00018488 /* HttpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67A61B30A76E00018488 /* HttpConnection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,24 @@
 /* Begin PBXFileReference section */
 		F9D598E61B2F9B9E00862EAB /* swiftrest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftrest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9D598E91B2F9B9E00862EAB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		F9D598F01B2F9C3000862EAB /* swiftrest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swiftrest-Bridging-Header.h"; sourceTree = "<group>"; };
+		F9DE67891B2F9FF800018488 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		F9DE678A1B2F9FF800018488 /* .mailmap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .mailmap; sourceTree = "<group>"; };
+		F9DE678B1B2F9FF800018488 /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		F9DE678C1B2F9FF800018488 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
+		F9DE678D1B2F9FF800018488 /* bench.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bench.c; sourceTree = "<group>"; };
+		F9DE678F1B2F9FF800018488 /* parsertrace.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = parsertrace.c; sourceTree = "<group>"; };
+		F9DE67901B2F9FF800018488 /* url_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = url_parser.c; sourceTree = "<group>"; };
+		F9DE67941B2F9FF800018488 /* http_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = http_parser.c; sourceTree = "<group>"; };
+		F9DE67951B2F9FF800018488 /* http_parser.gyp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = http_parser.gyp; sourceTree = "<group>"; };
+		F9DE67961B2F9FF800018488 /* http_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_parser.h; sourceTree = "<group>"; };
+		F9DE67971B2F9FF800018488 /* LICENSE-MIT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "LICENSE-MIT"; sourceTree = "<group>"; };
+		F9DE67981B2F9FF800018488 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		F9DE67991B2F9FF800018488 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F9DE679A1B2F9FF800018488 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = test.c; sourceTree = "<group>"; };
+		F9DE67A31B30835200018488 /* testdata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testdata.c; sourceTree = "<group>"; };
+		F9DE67A41B30835200018488 /* testdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testdata.h; sourceTree = "<group>"; };
+		F9DE67A61B30A76E00018488 /* HttpConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpConnection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +62,7 @@
 		F9D598DD1B2F9B9E00862EAB = {
 			isa = PBXGroup;
 			children = (
+				F9DE67881B2F9FF800018488 /* http-parser */,
 				F9D598E81B2F9B9E00862EAB /* swiftrest */,
 				F9D598E71B2F9B9E00862EAB /* Products */,
 			);
@@ -58,8 +80,41 @@
 			isa = PBXGroup;
 			children = (
 				F9D598E91B2F9B9E00862EAB /* main.swift */,
+				F9D598F01B2F9C3000862EAB /* swiftrest-Bridging-Header.h */,
+				F9DE67A31B30835200018488 /* testdata.c */,
+				F9DE67A41B30835200018488 /* testdata.h */,
+				F9DE67A61B30A76E00018488 /* HttpConnection.swift */,
 			);
 			path = swiftrest;
+			sourceTree = "<group>";
+		};
+		F9DE67881B2F9FF800018488 /* http-parser */ = {
+			isa = PBXGroup;
+			children = (
+				F9DE67891B2F9FF800018488 /* .gitignore */,
+				F9DE678A1B2F9FF800018488 /* .mailmap */,
+				F9DE678B1B2F9FF800018488 /* .travis.yml */,
+				F9DE678C1B2F9FF800018488 /* AUTHORS */,
+				F9DE678D1B2F9FF800018488 /* bench.c */,
+				F9DE678E1B2F9FF800018488 /* contrib */,
+				F9DE67941B2F9FF800018488 /* http_parser.c */,
+				F9DE67951B2F9FF800018488 /* http_parser.gyp */,
+				F9DE67961B2F9FF800018488 /* http_parser.h */,
+				F9DE67971B2F9FF800018488 /* LICENSE-MIT */,
+				F9DE67981B2F9FF800018488 /* Makefile */,
+				F9DE67991B2F9FF800018488 /* README.md */,
+				F9DE679A1B2F9FF800018488 /* test.c */,
+			);
+			path = "http-parser";
+			sourceTree = "<group>";
+		};
+		F9DE678E1B2F9FF800018488 /* contrib */ = {
+			isa = PBXGroup;
+			children = (
+				F9DE678F1B2F9FF800018488 /* parsertrace.c */,
+				F9DE67901B2F9FF800018488 /* url_parser.c */,
+			);
+			path = contrib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -88,6 +143,7 @@
 		F9D598DE1B2F9B9E00862EAB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Steffen Neubauer";
 				TargetAttributes = {
@@ -118,6 +174,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9DE67A51B30835200018488 /* testdata.c in Sources */,
+				F9DE67A71B30A76F00018488 /* HttpConnection.swift in Sources */,
+				F9DE679E1B2F9FF800018488 /* http_parser.c in Sources */,
 				F9D598EA1B2F9B9E00862EAB /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -206,14 +265,21 @@
 		F9D598EE1B2F9B9E00862EAB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swiftrest/swiftrest-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		F9D598EF1B2F9B9E00862EAB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swiftrest/swiftrest-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -236,6 +302,7 @@
 				F9D598EF1B2F9B9E00862EAB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
