@@ -11,6 +11,7 @@
 		F9DE679E1B2F9FF800018488 /* http_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67941B2F9FF800018488 /* http_parser.c */; };
 		F9DE67A51B30835200018488 /* testdata.c in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67A31B30835200018488 /* testdata.c */; };
 		F9DE67A71B30A76F00018488 /* HttpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67A61B30A76E00018488 /* HttpConnection.swift */; };
+		F9DE67A91B322CC700018488 /* HttpServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67A81B322CC700018488 /* HttpServer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +47,7 @@
 		F9DE67A31B30835200018488 /* testdata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testdata.c; sourceTree = "<group>"; };
 		F9DE67A41B30835200018488 /* testdata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testdata.h; sourceTree = "<group>"; };
 		F9DE67A61B30A76E00018488 /* HttpConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpConnection.swift; sourceTree = "<group>"; };
+		F9DE67A81B322CC700018488 /* HttpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpServer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				F9DE67A31B30835200018488 /* testdata.c */,
 				F9DE67A41B30835200018488 /* testdata.h */,
 				F9DE67A61B30A76E00018488 /* HttpConnection.swift */,
+				F9DE67A81B322CC700018488 /* HttpServer.swift */,
 			);
 			path = swiftrest;
 			sourceTree = "<group>";
@@ -176,6 +179,7 @@
 			files = (
 				F9DE67A51B30835200018488 /* testdata.c in Sources */,
 				F9DE67A71B30A76F00018488 /* HttpConnection.swift in Sources */,
+				F9DE67A91B322CC700018488 /* HttpServer.swift in Sources */,
 				F9DE679E1B2F9FF800018488 /* http_parser.c in Sources */,
 				F9D598EA1B2F9B9E00862EAB /* main.swift in Sources */,
 			);

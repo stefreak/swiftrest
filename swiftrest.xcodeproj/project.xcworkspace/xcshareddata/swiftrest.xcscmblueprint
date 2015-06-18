@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "553488075A51F68B39D29100C08A13F5739C7BA2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "90C3FD88F8002F902A5FDF9D64063244571F233C" : 0,
+    "553488075A51F68B39D29100C08A13F5739C7BA2" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "391C3A55-0CD7-4649-B098-E989BFB72922",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "90C3FD88F8002F902A5FDF9D64063244571F233C" : "swiftrest\/http-parser\/",
+    "553488075A51F68B39D29100C08A13F5739C7BA2" : "swiftrest\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "swiftrest",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "swiftrest.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:stefreak\/swiftrest.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "553488075A51F68B39D29100C08A13F5739C7BA2"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:joyent\/http-parser.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "90C3FD88F8002F902A5FDF9D64063244571F233C"
+    }
+  ]
+}
