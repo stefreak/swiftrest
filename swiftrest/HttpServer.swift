@@ -9,7 +9,7 @@
 // I'm using foundation here but dependency should be removed later
 import Foundation
 
-struct HttpResponse {
+class HttpResponse {
     var statusCode: Int = 200
     var statusMessage: String = "OK"
     var headers: Dictionary<String, String> = Dictionary()
@@ -20,7 +20,7 @@ struct HttpResponse {
     }
 }
 
-struct HttpRequest {
+class HttpRequest {
     var url: String
     var headers: Dictionary<String, String> = Dictionary()
     var body: [UInt8] = Array()
@@ -32,7 +32,7 @@ struct HttpRequest {
 
 
 typealias NextCallback = () -> (Void)
-typealias HttpRequestHandler = (HttpRequest, inout HttpResponse, NextCallback) -> (Void)
+typealias HttpRequestHandler = (HttpRequest, HttpResponse, NextCallback) -> (Void)
 
 enum HttpServerError : ErrorType {
     case CouldNotListen(String)
@@ -51,12 +51,13 @@ class SimpleHttpServer: HttpServer {
         handlerChain.append(handler)
     }
 
-    func handleRequest(request: HttpRequest, inout response: HttpResponse) {
-        let firstHandler = nextCallbackFor(index: -1, request: request, response: &response)
+    func handleRequest(request: HttpRequest) {
+        let response = HttpResponse()
+        let firstHandler = nextCallbackFor(index: -1, request: request, response: response)
         firstHandler()
     }
 
-    func nextCallbackFor(index index: Int, request: HttpRequest, inout response: HttpResponse) -> NextCallback {
+    func nextCallbackFor(index index: Int, request: HttpRequest, response: HttpResponse) -> NextCallback {
         let next = index + 1
 
         if next >= handlerChain.count {
@@ -70,8 +71,8 @@ class SimpleHttpServer: HttpServer {
 
         return { [unowned self] in
             let nextHandler = self.handlerChain[next]
-            let nextCallback = self.nextCallbackFor(index: next, request: request, response: &response)
-            nextHandler(request, &response, nextCallback)
+            let nextCallback = self.nextCallbackFor(index: next, request: request, response: response)
+            nextHandler(request, response, nextCallback)
         }
     }
 
