@@ -21,6 +21,7 @@ extension String {
 }
 
 enum ShouldContinueParsing: Int32 {
+    typealias RawType = Int32
     case Continue = 0
     case Stop = 1
 }
@@ -52,58 +53,111 @@ class HttpConnection {
     private var parser : http_parser;
     private var settings : http_parser_settings;
 
-    private static var mapHack = Dictionary<UnsafeMutablePointer<http_parser>, HttpConnection>();
+    typealias HttpParserRef = UnsafeMutablePointer<http_parser>
+    typealias RawData = UnsafePointer<Int8>
+
+    private static var mapHack = Dictionary<HttpParserRef, HttpConnection>();
     
-    enum Event {
+    private enum Event {
         case MessageBegin
-        case URL(String)
-        case Status(String)
-        case HeaderField(String)
-        case HeaderValue(String)
+        case URL(RawData, Int)
+        case Status(RawData, Int)
+        case HeaderField(RawData, Int)
+        case HeaderValue(RawData, Int)
         case HeadersComplete
-        case Body(String)
+        case Body(RawData, Int)
         case MessageComplete
         case ChunkHeader
         case ChunkComplete
-    }
-    
-    private enum RawEvent {
-        case MessageBegin
-        case URL(UnsafePointer<Int8>, Int)
-        case Status(UnsafePointer<Int8>, Int)
-        case HeaderField(UnsafePointer<Int8>, Int)
-        case HeaderValue(UnsafePointer<Int8>, Int)
-        case HeadersComplete
-        case Body(UnsafePointer<Int8>, Int)
-        case MessageComplete
-        case ChunkHeader
-        case ChunkComplete
+        
+        func stringValue() -> String? {
+            if let bytes = self.rawBytesPointer(), len = self.rawBytesLength() {
+                return String.fromCString(bytes, withLength: len)
+            }
+
+            return nil
+        }
+
+        func rawBytesPointer() -> RawData? {
+            switch self {
+            case let .URL(bytes, _):
+                return bytes
+            case let .Status(bytes, _):
+                return bytes
+            case let .HeaderField(bytes, _):
+                return bytes
+            case let .HeaderValue(bytes, _):
+                return bytes
+            case let .Body(bytes, _):
+                return bytes
+            default:
+                return nil;
+            }
+        }
+
+        func rawBytesLength() -> Int? {
+            switch self {
+            case let .URL(_, len):
+                return len
+            case let .Status(_, len):
+                return len
+            case let .HeaderField(_, len):
+                return len
+            case let .HeaderValue(_, len):
+                return len
+            case let .Body(_, len):
+                return len
+            default:
+                return nil;
+            }
+        }
     }
 
+    
     init(type: HttpConnectionType) {
         self.parser = http_parser()
         self.type = type
-        self.settings = http_parser_settings(on_message_begin: { (parser: UnsafeMutablePointer<http_parser>) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .MessageBegin).rawValue
-            }, on_url: { (parser:UnsafeMutablePointer<http_parser>, chunk: UnsafePointer<Int8>, len: Int) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .URL(chunk, len)).rawValue
-            }, on_status: { (parser:UnsafeMutablePointer<http_parser>, chunk: UnsafePointer<Int8>, len: Int) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .Status(chunk, len)).rawValue
-            }, on_header_field: { (parser:UnsafeMutablePointer<http_parser>, chunk: UnsafePointer<Int8>, len: Int) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .HeaderField(chunk, len)).rawValue
-            }, on_header_value: { (parser:UnsafeMutablePointer<http_parser>, chunk: UnsafePointer<Int8>, len: Int) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .HeaderValue(chunk, len)).rawValue
-            }, on_headers_complete: { (parser: UnsafeMutablePointer<http_parser>) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .HeadersComplete).rawValue
-            }, on_body: { (parser:UnsafeMutablePointer<http_parser>, chunk: UnsafePointer<Int8>, len: Int) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .Body(chunk, len)).rawValue
-            }, on_message_complete: { (parser: UnsafeMutablePointer<http_parser>) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .MessageComplete).rawValue
-            }, on_chunk_header: { (parser: UnsafeMutablePointer<http_parser>) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .ChunkHeader).rawValue
-            }) { (parser: UnsafeMutablePointer<http_parser>) -> Int32 in
-                return HttpConnection.handleRawEvent(parser, rawEvent: .ChunkComplete).rawValue
-        }
+        self.settings = http_parser_settings(
+            on_message_begin: { (parser: HttpParserRef) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .MessageBegin)
+            },
+
+            on_url: { (parser:HttpParserRef, chunk: RawData, len: Int) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .URL(chunk, len))
+            },
+
+            on_status: { (parser:HttpParserRef, chunk: RawData, len: Int) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .Status(chunk, len))
+            },
+            
+            on_header_field: { (parser:HttpParserRef, chunk: RawData, len: Int) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .HeaderField(chunk, len))
+            },
+            
+            on_header_value: { (parser:HttpParserRef, chunk: RawData, len: Int) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .HeaderValue(chunk, len))
+            },
+            
+            on_headers_complete: { (parser: HttpParserRef) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .HeadersComplete)
+            },
+            
+            on_body: { (parser:HttpParserRef, chunk: RawData, len: Int) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .Body(chunk, len))
+            },
+            
+            on_message_complete: { (parser: HttpParserRef) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .MessageComplete)
+            },
+            
+            on_chunk_header: { (parser: HttpParserRef) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .ChunkHeader)
+            },
+        
+            on_chunk_complete: { (parser: HttpParserRef) -> Int32 in
+                return HttpConnection.handleEvent(parser, event: .ChunkComplete)
+            }
+        )
 
         http_parser_init(&parser, type.httpParserType())
         
@@ -115,7 +169,7 @@ class HttpConnection {
     }
     
 
-    func receive(data: UnsafePointer<Int8>, len: Int) throws {
+    func receive(data: RawData, len: Int) throws {
         let nparsed = http_parser_execute(&parser, &self.settings, data, len)
         
         if (nparsed != len) {
@@ -123,52 +177,26 @@ class HttpConnection {
         }
     }
     
-    private static func handleRawEvent(parser: UnsafeMutablePointer<http_parser>, rawEvent: RawEvent) -> ShouldContinueParsing {
-        
-        var event : Event
-        
-        switch rawEvent {
-        case .MessageBegin:
-            event = .MessageBegin
-        case let .URL(str, len):
-            event = .URL(String.fromCString(str, withLength:len)!)
-        case let .Status(str, len):
-            event = .Status(String.fromCString(str, withLength:len)!)
-        case let .HeaderField(str, len):
-            event = .HeaderField(String.fromCString(str, withLength:len)!)
-        case let .HeaderValue(str, len):
-            event = .HeaderValue(String.fromCString(str, withLength:len)!)
-        case .HeadersComplete:
-            event = .HeadersComplete
-        case let .Body(str, len):
-            event = .Body(String.fromCString(str, withLength:len)!)
-        case .MessageComplete:
-            event = .MessageComplete
-        case .ChunkHeader:
-            event = .ChunkHeader
-        case .ChunkComplete:
-            event = .ChunkComplete
-        }
-        
-        return HttpConnection.mapHack[parser]!.handleEvent(event)
+    private static func handleEvent(parser: HttpParserRef, event: Event) -> ShouldContinueParsing.RawType {
+        return HttpConnection.mapHack[parser]!.handleEvent(event).rawValue
     }
     
     private func handleEvent(event: Event) -> ShouldContinueParsing {
         switch event {
         case .MessageBegin:
             print("message begin")
-        case let .URL(str):
-            print("url: \(str)")
-        case let .Status(str):
-            print("status: \(str)")
-        case let .HeaderField(str):
-            print("header field: \(str)")
-        case let .HeaderValue(str):
-            print("header value: \(str)")
+        case .URL:
+            print("url: \(event.stringValue())")
+        case .Status:
+            print("status: \(event.stringValue())")
+        case .HeaderField:
+            print("header field: \(event.stringValue())")
+        case .HeaderValue:
+            print("header value: \(event.stringValue())")
         case .HeadersComplete:
             print("header complete")
-        case let .Body(str):
-            print("body: \(str)")
+        case .Body:
+            print("body: \(event.stringValue())")
         case .MessageComplete:
             print("message complete")
         case .ChunkHeader:

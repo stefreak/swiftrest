@@ -7,7 +7,7 @@
 //
 
 // I'm using foundation here but dependency should be removed later
-import Foundation
+//import Foundation
 
 enum HttpStatus {
     case OK

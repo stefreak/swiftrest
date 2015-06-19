@@ -6,8 +6,7 @@
 //  Copyright © 2015 Steffen Neubauer. All rights reserved.
 //
 
-// hah! we don't need this.
-//import Foundation
+import Foundation
 
 
 let con = HttpConnection(type: .Request)
@@ -40,6 +39,7 @@ server2.addHandler { (request: HttpRequest, response: HttpResponseBuilder, next:
         next()
     }
 }
+
 server2.addHandler { (request: HttpRequest, response: HttpResponseBuilder, next: NextCallback) -> (Void) in
     if request.url == "/handler2" {
         response.end("I only listen on /handler2!")
