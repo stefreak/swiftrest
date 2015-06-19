@@ -9,21 +9,78 @@
 // I'm using foundation here but dependency should be removed later
 import Foundation
 
-class HttpResponse {
-    var statusCode: Int = 200
-    var statusMessage: String = "OK"
-    var headers: Dictionary<String, String> = Dictionary()
-    var body: [UInt8] = Array()
+enum HttpStatus {
+    case OK
+    case NotFound
+    case Other(Int, String)
 
-    func end(body: String) {
-        print("\(statusCode) \(statusMessage) - Body: \(body)")
+    func code() -> Int {
+        switch self {
+        case OK:
+            return 200
+        case NotFound:
+            return 404
+        case let Other(status, _):
+            return status
+        }
+    }
+
+    func message() -> String {
+        switch self {
+        case OK:
+            return "OK"
+        case NotFound:
+            return "Not Found"
+        case let Other(_, message):
+            return message
+        }
     }
 }
 
-class HttpRequest {
+protocol HttpResponseBuilderDelegate: AnyObject {
+    func httpResponseBuilderEndResponse(response: HttpResponse)
+}
+
+class HttpResponsePrinter: HttpResponseBuilderDelegate {
+    func httpResponseBuilderEndResponse(response: HttpResponse) {
+        if let body = response.body {
+            print("\(response.statusCode) \(response.statusMessage) - Body: \(body)")
+        } else {
+            print("\(response.statusCode) \(response.statusMessage) - No body")
+        }
+    }
+}
+
+class HttpResponseBuilder {
+    private var response = HttpResponse()
+    private weak var delegate : HttpResponseBuilderDelegate?;
+
+    init(delegate: HttpResponseBuilderDelegate?) {
+        self.delegate = delegate
+    }
+
+    func setStatus(status: HttpStatus) {
+        response.statusCode = status.code()
+        response.statusMessage = status.message()
+    }
+
+    func end(body: String) {
+        response.body = body
+        self.delegate?.httpResponseBuilderEndResponse(response)
+    }
+}
+
+struct HttpResponse {
+    var statusCode: Int = 200
+    var statusMessage: String = "OK"
+    var headers: Dictionary<String, String> = Dictionary()
+    var body: String?
+}
+
+struct HttpRequest {
     var url: String
     var headers: Dictionary<String, String> = Dictionary()
-    var body: [UInt8] = Array()
+
     init(url: String = "") {
         self.url = url
     }
@@ -32,7 +89,7 @@ class HttpRequest {
 
 
 typealias NextCallback = () -> (Void)
-typealias HttpRequestHandler = (HttpRequest, HttpResponse, NextCallback) -> (Void)
+typealias HttpRequestHandler = (HttpRequest, HttpResponseBuilder, NextCallback) -> (Void)
 
 enum HttpServerError : ErrorType {
     case CouldNotListen(String)
@@ -46,25 +103,24 @@ protocol HttpServer {
 
 class SimpleHttpServer: HttpServer {
     private var handlerChain: [HttpRequestHandler] = Array()
-
+    private var responsePrinter = HttpResponsePrinter()
+    
     func addHandler(handler: HttpRequestHandler) {
         handlerChain.append(handler)
     }
 
     func handleRequest(request: HttpRequest) {
-        let response = HttpResponse()
+        let response = HttpResponseBuilder(delegate: responsePrinter)
         let firstHandler = nextCallbackFor(index: -1, request: request, response: response)
         firstHandler()
     }
 
-    func nextCallbackFor(index index: Int, request: HttpRequest, response: HttpResponse) -> NextCallback {
+    func nextCallbackFor(index index: Int, request: HttpRequest, response: HttpResponseBuilder) -> NextCallback {
         let next = index + 1
 
         if next >= handlerChain.count {
             return {
-                response.statusCode = 404
-                response.statusMessage = "Not Found"
-                
+                response.setStatus(.NotFound)
                 response.end("Error: Could not find matching handler for this request")
             }
         }

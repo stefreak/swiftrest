@@ -20,7 +20,7 @@ try con.receive(return_test_data(), len: return_test_length())
 
 let server = SimpleHttpServer()
 
-server.addHandler { (request: HttpRequest, response: HttpResponse, next: NextCallback) -> (Void) in
+server.addHandler { (request: HttpRequest, response: HttpResponseBuilder, next: NextCallback) -> (Void) in
     response.end("hah! it works!")
 }
 
@@ -33,14 +33,14 @@ server.handleRequest(HttpRequest())
 
 let server2 = SimpleHttpServer()
 
-server2.addHandler { (request: HttpRequest, response: HttpResponse, next: NextCallback) -> (Void) in
+server2.addHandler { (request: HttpRequest, response: HttpResponseBuilder, next: NextCallback) -> (Void) in
     if request.url == "/handler1" {
         response.end("I only listen on /handler1!")
     } else {
         next()
     }
 }
-server2.addHandler { (request: HttpRequest, response: HttpResponse, next: NextCallback) -> (Void) in
+server2.addHandler { (request: HttpRequest, response: HttpResponseBuilder, next: NextCallback) -> (Void) in
     if request.url == "/handler2" {
         response.end("I only listen on /handler2!")
     } else {
@@ -57,7 +57,19 @@ server2.handleRequest(HttpRequest(url: "/doesnotexist"))
 
 // test empty handler chain
 let server3 = SimpleHttpServer()
-server3.handleRequest(HttpRequest())
+
+for var i: Int = 0; i < 1000; i++ {
+    server3.addHandler { (request: HttpRequest, response: HttpResponseBuilder, next: NextCallback) -> (Void) in
+        next()
+    }
+}
+
+server3.addHandler { (request: HttpRequest, response: HttpResponseBuilder, next: NextCallback) -> (Void) in
+    response.end("hah! it works! \(request.url)")
+}
+
+
+server3.handleRequest(HttpRequest(url: "/asd"))
 
 
 
