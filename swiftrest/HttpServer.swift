@@ -99,6 +99,7 @@ protocol HttpServer {
     func serve(port:Int, host:String) throws
 
     func addHandler(handler:HttpRequestHandler)
+    func handleRequest(request: HttpRequest)
 }
 
 class SimpleHttpServer: HttpServer {

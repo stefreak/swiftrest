@@ -9,11 +9,37 @@
 import Foundation
 
 
+let emitter = EventEmitter()
+
+emitter.on(ListenerEvent.RemoveListenerType, listener: CallbackHandler(callback: { (event: ListenerEvent) -> Void in
+    switch event {
+    case let .RemoveListener(listener):
+        print("removed", listener)
+    default:
+        print("did not match")
+    }
+}))
+
+emitter.removeAllListeners()
+
+
+
+/*
 let con = HttpConnection(type: .Request)
 let con2 = HttpConnection(type: .Request)
 
 try con2.receive(return_test_data(), len: return_test_length())
 try con.receive(return_test_data(), len: return_test_length())
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -34,7 +60,7 @@ let server2 = SimpleHttpServer()
 
 server2.addHandler { (request: HttpRequest, response: HttpResponseBuilder, next: NextCallback) -> (Void) in
     if request.url == "/handler1" {
-        response.end("I only listen on /handler1!")
+        response.end("I only lixsten on /handler1!")
     } else {
         next()
     }
@@ -77,3 +103,4 @@ server3.handleRequest(HttpRequest(url: "/asd"))
 
 // TODO Implement in the future
 try server.serve(8080, host: "localhost")
+*/

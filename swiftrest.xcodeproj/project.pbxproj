@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F917564A1B360DFB00E9E340 /* EventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91756491B360DFB00E9E340 /* EventEmitter.swift */; };
+		F98494DE1B363944004B7FB0 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98494DD1B363944004B7FB0 /* Stream.swift */; };
 		F9D598EA1B2F9B9E00862EAB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D598E91B2F9B9E00862EAB /* main.swift */; };
 		F9DE679E1B2F9FF800018488 /* http_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67941B2F9FF800018488 /* http_parser.c */; };
 		F9DE67A51B30835200018488 /* testdata.c in Sources */ = {isa = PBXBuildFile; fileRef = F9DE67A31B30835200018488 /* testdata.c */; };
@@ -27,6 +29,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F91756491B360DFB00E9E340 /* EventEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventEmitter.swift; sourceTree = "<group>"; };
+		F98494DD1B363944004B7FB0 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		F9D598E61B2F9B9E00862EAB /* swiftrest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftrest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9D598E91B2F9B9E00862EAB /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F9D598F01B2F9C3000862EAB /* swiftrest-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swiftrest-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -87,6 +91,8 @@
 				F9DE67A41B30835200018488 /* testdata.h */,
 				F9DE67A61B30A76E00018488 /* HttpConnection.swift */,
 				F9DE67A81B322CC700018488 /* HttpServer.swift */,
+				F91756491B360DFB00E9E340 /* EventEmitter.swift */,
+				F98494DD1B363944004B7FB0 /* Stream.swift */,
 			);
 			path = swiftrest;
 			sourceTree = "<group>";
@@ -178,10 +184,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9DE67A51B30835200018488 /* testdata.c in Sources */,
+				F917564A1B360DFB00E9E340 /* EventEmitter.swift in Sources */,
 				F9DE67A71B30A76F00018488 /* HttpConnection.swift in Sources */,
 				F9DE67A91B322CC700018488 /* HttpServer.swift in Sources */,
 				F9DE679E1B2F9FF800018488 /* http_parser.c in Sources */,
 				F9D598EA1B2F9B9E00862EAB /* main.swift in Sources */,
+				F98494DE1B363944004B7FB0 /* Stream.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
