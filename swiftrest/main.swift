@@ -11,18 +11,31 @@ import Foundation
 
 let emitter = EventEmitter()
 
-emitter.on(ListenerEvent.RemoveListenerType, listener: CallbackHandler(callback: { (event: ListenerEvent) -> Void in
+let listener = { (event: ListenerEvent) -> () in
     switch event {
-    case let .RemoveListener(listener):
-        print("removed", listener)
+    case let .RemoveListener(removeToken):
+        print("removed", removeToken)
+    case let .NewListener(removeToken):
+        print("new", removeToken)
     default:
-        print("did not match")
+        print("Default")
     }
-}))
+}
+
+emitter.on(ListenerEvent.RemoveListenerType, listener: listener)
+emitter.on(ListenerEvent.NewListenerType, listener: listener)
+
+emitter.once(ListenerEvent.NewListenerType) { (event: ListenerEvent) -> () in
+    print("only once!!")
+}
+
+emitter.on(ListenerEvent.NewListenerType) { (event: ListenerEvent) -> () in
+}
+
+emitter.on(ListenerEvent.NewListenerType) { (event: ListenerEvent) -> () in
+}
 
 emitter.removeAllListeners()
-
-
 
 /*
 let con = HttpConnection(type: .Request)

@@ -81,7 +81,6 @@ protocol Readable: EventEmitting {
     func unshift(buffer: [UInt8])
 }
 
-
 enum WriteEvent {
     case Drain
 
